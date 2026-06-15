@@ -239,15 +239,65 @@ document.addEventListener("keydown", function (e) {
 //        - se retornar null  -> chame encerrarJogo() e dê return;
 //        - se retornar posição -> use essa posição (trata o wraparound).
 //   4) cobra.unshift(nova) para pôr a cabeça na frente; cobra.pop() tira a cauda.
+
+function pegarDelta() {
+  if (direcao == 'cima') {
+    return {
+      x: 0,
+      y: -1
+    };
+  }
+  if (direcao == 'baixo') {
+    return {
+      x: 0,
+      y: 1
+    };
+  }
+  if (direcao == 'direita') {
+    return {
+      x: 1,
+      y: 0
+    };
+  }
+  if (direcao == 'esquerda') {
+    return {
+      x: -1,
+      y: 0
+    };
+  }
+}
+
+function taFora(coord) {
+  return (!(0 <= coord.x || coord.x < TAMANHO) && (0 <= coord.y || coord.y < TAMANHO));
+}
+
 function moverCobra() {
-  // TODO 1: implemente o movimento da cobra
+  let delta = pegarDelta();
+  let novaCabeca = {x: cobra[0].x + delta.x, y: cobra[0].y + delta.y};
+
+  if (taFora(novaCabeca)) {
+    novaCabeca = comportamentoDeBorda(novaCabeca);
+    if (novaCabeca === null) {
+      encerrarJogo();
+      return;
+    }
+  }
+
+  cobra.unshift(novaCabeca);
+  cobra.pop();
 }
 
 // TODO 2: verificarColisao() — retornar true se a cobra bateu.
 //   - Colisão com borda: só se !CONFIG.wraparound (cabeça fora da grade).
 //   - Colisão com o corpo: percorra de i=1 até o fim comparando com a cabeça.
 function verificarColisao() {
-  // TODO 2: implemente a verificação de colisão
+  let cabeca = cobra[0];
+  for (let i = 1; i < cobra.length; i++) {
+    let corpo = cobra[i];
+    if (cabeca.x == corpo.x && cabeca.y == corpo.y) {
+      return true;
+    }
+  }
   return false;
 }
 
@@ -255,10 +305,15 @@ function verificarColisao() {
 //   - Use do...while sorteando x/y aleatórios até cair fora da cobra.
 //   - Guarde em 'comida'.
 //   - Defina comidaEspecial = Math.random() < CONFIG.chance_comida_especial.
+
+function pegarIntAleatorio(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function gerarComida() {
-  // TODO 3: implemente a geração da comida
-  comida = { x: 5, y: 5 };   // posição provisória só para o jogo não quebrar
-  comidaEspecial = false;
+  comida = {x: pegarIntAleatorio(0, TAMANHO - 1), y: pegarIntAleatorio(0, TAMANHO - 1)};
+
+  comidaEspecial = Math.random() < CONFIG.chance_comida_especial;
 }
 
 // Scaffold da Aula 1 — implemente os 3 TODOs acima
