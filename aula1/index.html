@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake — Meu Jogo</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- IMPORTANTE: config.js é carregado ANTES de tudo.
+       Assim, quando os outros scripts rodarem, o objeto CONFIG já existe. -->
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- ───────────── TELA DE INÍCIO ───────────── -->
+  <div id="tela-inicio" class="tela">
+    <h1>🐍 SNAKE</h1>
+    <p class="subtitulo">Digite seu nome e jogue!</p>
+    <input id="campo-nome" type="text" maxlength="16" placeholder="Seu nome" />
+    <button id="btn-jogar">Jogar</button>
+  </div>
+
+  <!-- ───────────── TELA DO JOGO ───────────── -->
+  <div id="tela-jogo" class="tela escondido">
+    <div class="area-jogo">
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="painel">
+      <div class="painel-bloco">
+        <span class="painel-rotulo">Jogador</span>
+        <span id="texto-nome" class="painel-valor">—</span>
+      </div>
+      <div class="painel-bloco">
+        <span class="painel-rotulo">Score</span>
+        <span id="texto-score" class="painel-valor">0</span>
+      </div>
+      <div class="painel-bloco">
+        <span class="painel-rotulo">Velocidade (nível)</span>
+        <span id="texto-nivel" class="painel-valor">0</span>
+      </div>
+
+      <!-- Área do leaderboard. Vazia na Aula 1, preenchida na Aula 2. -->
+      <div class="painel-bloco">
+        <span class="painel-rotulo">Ranking</span>
+        <ul id="lista-leaderboard"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────── TELA DE GAME OVER ───────────── -->
+  <div id="tela-game-over" class="tela escondido">
+    <div id="emoji-morte" class="emoji-grande">💀</div>
+    <h2 id="texto-game-over">Fim de jogo!</h2>
+    <p>Seu score: <span id="texto-score-final">0</span></p>
+    <p>Recorde local: <span id="texto-recorde">0</span></p>
+    <button id="btn-reiniciar">Reiniciar</button>
+  </div>
+
+  <!-- Scripts na ordem correta de dependência -->
+  <script src="ui.js"></script>
+  <script src="network.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
